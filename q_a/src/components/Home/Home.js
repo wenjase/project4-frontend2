@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import React from 'react';
+import axios from 'axios';
+import {Button, Form} from 'semantic-ui-react'
 // import axios from 'axios';
 
 function Home(props) {
 
+
+
    const [question, setQuestion] = useState("")
-   const [questions, setQuestions] = useState([])
+   const [questions, setQuestions] = useState(null)
 //    const [user, setUser] = useState("")
 //    const [answer, setAnswer] = useState("")
 //    const [answers, setAnswers] = useState([]) 
@@ -17,34 +21,19 @@ function Home(props) {
 //     })
 // }
 
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        try{
-        fetch("http://localhost:8000/questions/", {
-  "headers": {
-    "content-type": "application/json",
-  },
-  "body": JSON.stringify({question:question, "csrfmiddlewaretoken": "mTqdPljNmlWUekEY3VQPgGuMyHtxYs0FavJmT5hhbB2APAQukPmmhQqj8OQhUdAy"}),
-  "method": "POST",
-//   "mode": "cors",
-//   "credentials": "include"
-});
-
-} catch {
-    console.log("err")
-}
-    }
+const url = "http://localhost:8000/questions/"
 
 useEffect(() => {
-    fetch('http://localhost:8000/questions/')
-    .then(res => res.json())
-    .then(res => {
-        setQuestions(res)
-        console.log(res)
-    })
+    axios.get(url)
+    .then((res) => setQuestions(res))
 
-}, [])
+}, []);
+
+
+
+
+
+
 
 // useEffect(() => {
 //     fetch('http://localhost:8000/answers/')
@@ -67,36 +56,23 @@ const deleteQuestion = (e) => {
     setQuestion(e.target.value)
 }
 
+const sendData = () => {
+    axios.post(url, {
+        question,
+        questions
+    })
+}
+
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input name='question' type='text' onChange={handleChange} color='gray' />
-                <input type='submit' />
-            </form>
-            {/* mapping through to display information */}
-            <div className="question">
-            {questions && (
-                    questions.map((question) => {
-                      return  (<h2>{question.question}</h2>)
-                    }
-                    ))}
-                    
-                    </div>
-            <div>
-                <button onChange={deleteQuestion}>Delete</button>
-            </div>
-            {/* <form onSubmit={handleSubmit}>
-                <input name='answer' type='text' onChange={handleChange} />
-                <input type='submit' />
-            </form>
-            <div className="answer">
-                    {answers && (
-                        answers.map((answer) => {
-                            return (<h2>{answer.answer}</h2>)
-                        })
-                    )}
-                </div> */}
+            <Form>
+                <Form.Field>
+                <label></label>
+                <input placeholder='Question' onChange={handleChange} />
+                </Form.Field>
+                <Button type='submit' onClick={sendData}>Submit</Button>
+            </Form>
         </div>
     );
 }

@@ -19,15 +19,7 @@ function Answer(props) {
     }
 
 
-    useEffect(() => {
-        fetch('http://localhost:8000/answers/')
-        .then(res => res.json())
-        .then(res => {
-            setAnswers(res)
-            console.log(res)
-        })
-    
-    }, [])
+
 
 
 const handleChange = (e) => {
