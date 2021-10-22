@@ -4,7 +4,7 @@ import axios from 'axios';
 import {Button, Form} from 'semantic-ui-react'
 // import axios from 'axios';
 
-function Home(props) {
+function Home() {
 
 
 
@@ -23,13 +23,19 @@ function Home(props) {
 
 const url = "http://localhost:8000/questions/"
 
-useEffect(() => {
-    axios.get(url)
-    .then((res) => setQuestions(res))
+// useEffect(() => {
+//     axios.get(url)
+//     .then((res) => setQuestion(res))
+//     .catch((err) => console.log(err))
 
-}, []);
+// }, []);
 
-
+// axios({
+//     method: 'get',
+//     url: 'http://localhost:8000/questions/'
+// })
+// .then((res) => setQuestions(res))
+// .catch((err) => console.log(err))
 
 
 
