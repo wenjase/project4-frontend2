@@ -9,7 +9,7 @@ function Home() {
 
 
    const [question, setQuestion] = useState("")
-   const [questions, setQuestions] = useState(null)
+   const [questions, setQuestions] = useState([])
 //    const [user, setUser] = useState("")
 //    const [answer, setAnswer] = useState("")
 //    const [answers, setAnswers] = useState([]) 
@@ -23,12 +23,20 @@ function Home() {
 
 const url = "http://localhost:8000/questions/"
 
-// useEffect(() => {
-//     axios.get(url)
-//     .then((res) => setQuestion(res))
-//     .catch((err) => console.log(err))
+const getQuestions = () => {
+    axios.get(`${url}`)
+    .then((res) => {
+        const allQuestions = res.data.question.allQuestions;
+        setQuestions(allQuestions)
+    })
+    .catch(error => console.error(`error: ${error}`))
+}
 
-// }, []);
+
+
+useEffect(() => {
+    getQuestions();
+}, []);
 
 // axios({
 //     method: 'get',
@@ -69,9 +77,21 @@ const sendData = () => {
     })
 }
 
+if (question.length > 0) {
+    return (
+        question.localeCompare(() => {
+            console.log(question);
+            return (
+                <div className='question' key={question.id}></div>
+            )
+        })
+    )
+}
+
 
     return (
         <div>
+
             <Form>
                 <Form.Field>
                 <label></label>
