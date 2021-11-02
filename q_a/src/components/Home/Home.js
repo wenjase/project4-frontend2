@@ -26,8 +26,8 @@ const url = "http://localhost:8000/questions/"
 const getQuestions = () => {
     axios.get(`${url}`)
     .then((res) => {
-        const allQuestions = res.data.question.allQuestions;
-        setQuestions(allQuestions)
+        console.log(res.data)
+        setQuestion(res.data)
     })
     .catch(error => console.error(`error: ${error}`))
 }
@@ -77,21 +77,24 @@ const sendData = () => {
     })
 }
 
-if (question.length > 0) {
-    return (
-        question.localeCompare(() => {
-            console.log(question);
-            return (
-                <div className='question' key={question.id}></div>
-            )
-        })
-    )
+const displayQuestion = () => {
+    return question ? (question.map((question) => {
+        return (
+            <div className='question' key={question.id}>
+                <h2 >{question.question}</h2>
+            </div>
+        );
+    })
+    ) : (<h2>no question</h2>)
 }
+
+
+
 
 
     return (
         <div>
-
+        {displayQuestion()}
             <Form>
                 <Form.Field>
                 <label></label>
