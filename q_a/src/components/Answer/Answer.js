@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import React from 'react';
-
+import {Button, Form} from 'semantic-ui-react';
 
 function Answer(props) {
 
     const [answer, setAnswer] = useState("")
     const [answers, setAnswers] = useState([]) 
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        fetch("http://localhost:8000/answers/", {
-            "headers": {
-                "content-type": "application/json",
-            },
-            "body": JSON.stringify({answer:answer}),
-            "method": "POST",
+    const url = "http://localhost:8000/answers/"
+
+    const getAnswers = () => {
+        axios.get(`${url}`)
+        .then((res) => {
+            console.log(res.data)
+            setAnswer(res.data)
         })
+        .catch(error => console.error(`error: ${error}`))
     }
-
-
+    
+    useEffect(() => {
+        getAnswers();
+    }, []);
 
 
 
@@ -26,20 +29,35 @@ const handleChange = (e) => {
     setAnswer(e.target.value)
 }
 
+const sendData = () => {
+    axios.post(url, {
+        answer,
+        answers
+    })
+}
+
+const displayAnswer = () => {
+    return answer ? (answer.map((answer) => {
+        return (
+            <div className='answer' key={answer.id}>
+                <h2 >{answer.answer}</h2>
+            </div>
+        );
+    })
+    ) : (<h2>no question</h2>)
+}
+
 
     return (
         <div>
-             <form onSubmit={handleSubmit}>
-                <input name='answer' type='text' onChange={handleChange} />
-                <input type='submit' />
-            </form>
-            <div className="answer">
-                    {answers && (
-                        answers.map((answer) => {
-                            return (<h2>{answer.answer}</h2>)
-                        })
-                    )}
-                </div>
+            {displayAnswer()}
+            <Form>
+                <Form.Field>
+                <label></label>
+                <input placeholder='Answer' onChange={handleChange} />
+                </Form.Field>
+                <Button type='submit' onClick={sendData}>Submit</Button>
+            </Form>
         </div>
     );
 }
