@@ -93,7 +93,7 @@ const displayQuestion = () => {
 
 
     return (
-        <div>
+        <div className='form' style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
         {displayQuestion()}
             <Form>
                 <Form.Field>

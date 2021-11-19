@@ -49,7 +49,7 @@ const displayAnswer = () => {
 
 
     return (
-        <div>
+        <div className=' col-md-3 forms'>
             {displayAnswer()}
             <Form>
                 <Form.Field>
